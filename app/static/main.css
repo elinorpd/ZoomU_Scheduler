@@ -1,4 +1,20 @@
+#header {
+	text-align: center;
+	width: 100%;
+}
 body {
 	position: absolute;
-	margin: auto;
+	margin: 20px;
+	padding: 20px
+	background-color: white;
+}
+h1 {
+    background-color: lightblue;
+}
+
+#menu li {
+	display: inline-block;
+    text-align: center;
+    padding: 20px;
+
 }
