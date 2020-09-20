@@ -36,7 +36,7 @@ def index():
 @app.route("/cal")
 def cal():
     creds =  None
-    SCOPES  = ['https://www.googleapis.com/auth/calendar.readonly']
+    SCOPES  = ['https://www.googleapis.com/auth/calendar']
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
@@ -69,7 +69,7 @@ def schedule():
     calendar_choice = int(request.form['gcalnum'])
 
     creds =  None
-    SCOPES  = ['https://www.googleapis.com/auth/calendar.readonly']
+    SCOPES  = ['https://www.googleapis.com/auth/calendar']
     flow = InstalledAppFlow.from_client_secrets_file('masha_credentials.json', SCOPES)
     creds = flow.run_local_server(port=0)
     service = googleapiclient.discovery.build('calendar', 'v3', credentials=creds)
@@ -95,7 +95,7 @@ def creating():
 
 
     creds =  None
-    SCOPES  = ['https://www.googleapis.com/auth/calendar.readonly']
+    SCOPES  = ['https://www.googleapis.com/auth/calendar']
     flow = InstalledAppFlow.from_client_secrets_file('masha_credentials.json', SCOPES)
     creds = flow.run_local_server(port=0)
 
