@@ -1,5 +1,7 @@
 <html>
 	<head>
+		{{ moment.include_jquery() }}
+    	{{ moment.include_moment() }}
 		{% if title %}
 		<title>{{ title }}</title>
 		{% else %}
@@ -7,8 +9,8 @@
 		{% endif %}
 	</head>
 	<body>
-		<div>ZoomU Scheduler: <a href="{{ url_for('index') }}">Home </a><a href="{{ url_for('login') }}">Login</a>
-		<p>{{ user.username }}</p></div>
+		<div id='header'><h1>ZoomU Scheduler: </h1>
+			<a href="{{ url_for('index') }}">Home </a><a href="{{ url_for('schedule') }}">Create Schedule</a></div>
 		<hr>
 		{% with messages = get_flashed_messages() %}
 		{% if messages %}
@@ -20,5 +22,8 @@
 		{% endif %}
 		{% endwith %}
 		{% block content %}{% endblock %}
+		{% block scripts %}
+		    {{ moment.include_moment() }}
+		{% endblock %}
 	</body>
 </html>
