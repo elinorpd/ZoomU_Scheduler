@@ -7,8 +7,18 @@
 		{% endif %}
 	</head>
 	<body>
-		<div>ZoomU Scheduler: <a href="/index">Home</a><a href="/login">Login</a>
+		<div>ZoomU Scheduler: <a href="{{ url_for('index') }}">Home </a><a href="{{ url_for('login') }}">Login</a>
 		<p>{{ user.username }}</p></div>
+		<hr>
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul>
+				{% for message in messages %}
+				<li>{{ message }}</li>
+				{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
 		{% block content %}{% endblock %}
 	</body>
 </html>
