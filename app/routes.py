@@ -11,6 +11,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import datetime as dt
 import pytz
+#from pytz import localize
 import copy
 
 
@@ -20,18 +21,7 @@ import copy
 @app.route('/index')
 def index():
     #print("hello world")
-	user = {'username': 'Elinor'}
-	posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-	return render_template('index.html', title="corndog", user=user, posts=posts)
+	return render_template('index.html')
 
 @app.route("/cal")
 def cal():
@@ -87,6 +77,7 @@ def schedule():
 
 @app.route('/creating', methods=['GET', 'POST'])
 def creating():
+    NEW_CAL_NAME = request.form['NEW_CAL_NAME']
     calendar_choice = int(request.form['calendar_choice'])
     sleep_time = int(request.form['sleep'])
     time_of_day = int(request.form['studypref'])
@@ -133,7 +124,7 @@ def creating():
             break
         #create a new calendar, and then we'll add events to it directly
     home_tz = pytz.timezone('Europe/Moscow') #switch to user input later
-    newcalendar = {'summary': 'new_test_calendar','timeZone': 'Europe/Moscow'} #need to change cal name lol
+    newcalendar = {'summary': NEW_CAL_NAME,'timeZone': 'Europe/Moscow'} #need to change cal name lol
 
     created_calendar = service.calendars().insert(body=newcalendar).execute()
 
@@ -156,8 +147,8 @@ def creating():
         service.events().insert(calendarId=new_calendar_id, body=event_dic[name]).execute()
 
     def freebusy():
-        dt1 = home_tz.localize(dt(2020, 9, 21, 12))
-        dt2 = home_tz.localize(dt(2020, 9, 22, 12))
+        dt1 = home_tz.localize(dt.datetime(2020, 9, 21, 12))
+        dt2 = home_tz.localize(dt.datetime(2020, 9, 22, 12))
         body = {"kind":"calendar#freeBusy",
           "timeMin": dt1.isoformat(), # in future need tp have it do next monday to next sunday
           "timeMax": dt2.isoformat(),
@@ -172,7 +163,7 @@ def creating():
         free = service.freebusy().query(body=body).execute()
         return free
 
-        free = freebusy()
+    free = freebusy()
 
     #next, set a sleep time
 
@@ -188,7 +179,7 @@ def creating():
         class_ends.append(dic['end'])
 
     times_list.sort()
-    times_list = [dt.strptime(time[0:-6],'%Y-%m-%dT%H:%M:%S') for time in times_list]
+    times_list = [dt.datetime.strptime(time[0:-6],'%Y-%m-%dT%H:%M:%S') for time in times_list]
     #class_starts = [dt.strptime(time[0:-6],'%Y-%m-%dT%H:%M:%S') for time in class_starts]
     #class_ends = [dt.strptime(time[0:-6],'%Y-%m-%dT%H:%M:%S') for time in class_ends]
     class_starts = [int(time[11:13]) for time in class_starts]
@@ -222,27 +213,27 @@ def creating():
         #find the sleep start time that's 10 pm or 1 hr after your last class, whichever is earlier
         if latest_class <= 21 and latest_class >= 12:
             #sleep at 22
-            start_datetime = dt(2020, 9, 21, 22)
-            stop_datetime = dt(2020, 9, 22, (22+sleep_time)%24)
+            start_datetime = dt.datetime(2020, 9, 21, 22)
+            stop_datetime = dt.datetime(2020, 9, 22, (22+sleep_time)%24)
             make_sleep_event()
         else:
             #sleep at latest_class+1
             if latest_class <= 5:
-                start_datetime = dt(2020, 9, 22, latest_class+1) #this would be so much easier achieved w datetimes ngl
+                start_datetime = dt.datetime(2020, 9, 22, latest_class+1) #this would be so much easier achieved w datetimes ngl
             else:
-                start_datetime = dt(2020, 9, 21, latest_class+1)
-            stop_datetime = dt(2020, 9, 22, (latest_class+1+sleep_time)%24)
+                start_datetime = dt.datetime(2020, 9, 21, (latest_class+1)%24)
+            stop_datetime = dt.datetime(2020, 9, 22, (latest_class+1+sleep_time)%24)
             make_sleep_event()
     else: #if night owl
         #find the sleep start that ends at 12 pm or an hour before earliest class, whichever is later
         if earliest_class >= 13:
             #sleep until 12
-            start_datetime = dt(2020, 9, 22, 12-sleep_time)
-            stop_datetime = dt(2020, 9, 22, 12)
+            start_datetime = dt.datetime(2020, 9, 22, 12-sleep_time)
+            stop_datetime = dt.datetime(2020, 9, 22, 12)
             make_sleep_event()
         else:
-            start_datetime = dt(2020, 9, 22, earliest_class-1-sleep_time)
-            stop_datetime = dt(2020, 9, 22, earliest_class-1)
+            start_datetime = dt.datetime(2020, 9, 22, earliest_class-1-sleep_time)
+            stop_datetime = dt.datetime(2020, 9, 22, earliest_class-1)
             make_sleep_event()
 
     for name in semisynch:
@@ -255,8 +246,8 @@ def creating():
         we_good = True
         for i in range(21,22):
             #test that yuo're not busy any day at that time
-            dt1 = school_tz.localize(dt(2020, 9, i, int(start_time[0:2]), int(start_time[3:5])))
-            dt2 = school_tz.localize(dt(2020, 9, i, int(end_time[0:2]), int(end_time[3:5])))
+            dt1 = school_tz.localize(dt.datetime(2020, 9, i, int(start_time[0:2]), int(start_time[3:5])))
+            dt2 = school_tz.localize(dt.datetime(2020, 9, i, int(end_time[0:2]), int(end_time[3:5])))
             print(dt1,dt2)
             body = {"kind":"calendar#freeBusy",
               "timeMin": dt1.isoformat(), #need tp have it do next monday to next sunday
@@ -278,8 +269,8 @@ def creating():
 
         if we_good:
             service.events().insert(calendarId=new_calendar_id, body=event_dic[name]).execute()
+    NEW_CAL_LINK = "https://calendar.google.com/calendar/embed?src="+new_calendar_id
 
-
-    return render_template('creating.html')
+    return render_template('creating.html', NEW_CAL_LINK=NEW_CAL_LINK)
 
 
