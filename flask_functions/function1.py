@@ -8,7 +8,7 @@ import copy
 scopes = ['https://www.googleapis.com/auth/calendar']
 
 #lowk unclear how to do this well come back to it
-flow = InstalledAppFlow.from_client_secrets_file("masha_credentials.json", scopes=scopes)
+#flow = InstalledAppFlow.from_client_secrets_file("masha_credentials.json", scopes=scopes)
 
 
 #ok back to real and applicable stuff
