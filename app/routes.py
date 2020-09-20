@@ -66,11 +66,7 @@ def cal():
 
 @app.route('/schedule', methods=['GET', 'POST'])
 def schedule():
-    sleep_time = int(request.form['sleep'])
-    time_of_day = int(request.form['studypref'])
     calendar_choice = int(request.form['gcalnum'])
-    localtimezone= "UTC"+request.form['localtimezone']
-    schooltimezone= "UTC"+request.form['schooltimezone']
 
     creds =  None
     SCOPES  = ['https://www.googleapis.com/auth/calendar.readonly']
@@ -91,6 +87,27 @@ def schedule():
 
 @app.route('/creating', methods=['GET', 'POST'])
 def creating():
+    calendar_choice = int(request.form['calendar_choice'])
+    sleep_time = int(request.form['sleep'])
+    time_of_day = int(request.form['studypref'])
+    localtimezone= "UTC"+request.form['localtimezone']
+    schooltimezone= "UTC"+request.form['schooltimezone']
+
+
+    creds =  None
+    SCOPES  = ['https://www.googleapis.com/auth/calendar.readonly']
+    flow = InstalledAppFlow.from_client_secrets_file('masha_credentials.json', SCOPES)
+    creds = flow.run_local_server(port=0)
+
+    service = googleapiclient.discovery.build('calendar', 'v3', credentials=creds)
+    cal_result = service.calendarList().list().execute()
+    calendar_id = cal_result['items'][calendar_choice]['id']
+    result = service.events().list(calendarId=calendar_id).execute()
+
+    course_list = []
+    for course in result['items']:
+        course_list.append(course['summary'])
+
     course_sync_pref = [int(request.form['course1']),int(request.form['course2']), int(request.form['course3']), int(request.form['course4']), int(request.form['course5'])]
     #create a dictionary where each entry is class_name:{dic of its atributes from user input}
     user_dic = {}
@@ -98,7 +115,9 @@ def creating():
     event_dic = {}
     cnt0 = 0
     for course in result['items']:
-        user_dic[course['summary']]={'sync':course_sync_pref[cnt]}
+        if cnt0 >= 5:
+            break
+        user_dic[course['summary']]={'sync':course_sync_pref[cnt0]}
         event_dic[course['summary']]= copy.deepcopy(course)
         cnt0 += 1
         try:
