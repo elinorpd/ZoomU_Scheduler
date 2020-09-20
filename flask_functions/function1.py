@@ -1,6 +1,6 @@
 from apiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
-import datetime as dt
+from datetime import datetime as dt
 import pytz
 import copy
 
