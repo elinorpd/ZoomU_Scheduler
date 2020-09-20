@@ -32,3 +32,15 @@ It's not perfect, but the basic functionality is there for a project developed i
 9. Click the link to view your new calendar or reload Google Calendar in another tab! It has been automatically added to your Google Calendar.
 
 Use `CTRL+C` to quit. 
+
+
+## Important files and folders overview
+1. workbook.ipynb is the original python script that will run on it's own, unrelated to the web app.
+
+2. app/ contains the necessary files to run the web application, including the template and static folders with the html and css files respectively.
+
+3. flask_functions/ contains python files adapted from workbook.ipynb for ease in adding to the webapp, they don't actually run on their own.
+
+4. masha_credentials.json contains API key info for the Google Calendar authentification.
+
+5. run.py is the python script that will run the webapp.
