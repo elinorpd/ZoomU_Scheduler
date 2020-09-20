@@ -37,7 +37,18 @@
     			<input type="radio" id="sync2" name="course5" value="2"><label for="sync2">2</label>
     		</li>
     	</ol>
-    	<input class="ui button" type="submit" value="Submit">
+    	<label for="localtimezone">Please enter your local timezone relative to UTC (Coordinated Universal Time). For example, if you are in France, you would enter "+2", if you are in New York you would enter: "-4".</label><br>
+            <input type="text" id="localtimezone" name="localtimezone"><br>
+            <label for="schooltimezone">Please enter your school timezone relative to UTC (Coordinated Universal Time).</label><br>
+            <input type="text" id="schooltimezone" name="schooltimezone"><br>
+            <p>Are you an early bird or a night owl?</p>
+            <input type="radio" id="bird" name="studypref" value="0">
+            <label for="bird">Early bird</label><br>
+            <input type="radio" id="owl" name="studypref" value="1">
+            <label for="owl">Night Owl</label><br>
+            <label for="sleep">How many hours of sleep would you like to get each night?</label><br>
+            <input type="text" name="sleep" id="sleep"><br>
+    		<input class="ui button" type="submit" value="Submit">
     	</form>
     	
 
