@@ -30,3 +30,5 @@ If you get a 'This app isn't verified' warning, click on 'Advanced' and then 'Go
 8. Authenticate again (same as #4)
 
 9. Click the link to view your new calendar or reload Google Calendar in another tab! It has been automatically added to your Google Calendar.
+
+Use `CTRL+C` to quit. 
