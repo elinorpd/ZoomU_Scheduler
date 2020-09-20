@@ -14,10 +14,10 @@
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 		<script src="../static/script.js"></script>
 	</head>
-	<body>
-		<div id='header'><h1>ZoomU Scheduler</h1>
+	<body style="margin: 20px;">
+		<div><h1 id='header'>ZoomU Scheduler</h1>
 			<h3>Navigation</h3>
-			<ul>
+			<ul id="menu">
 				<li><a href="{{ url_for('index') }}">Home</a></li>
 				<li><a href="{{ url_for('schedule') }}">Create Schedule</a></li>
 			</ul>
