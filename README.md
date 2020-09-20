@@ -19,7 +19,7 @@ It's not perfect, but the basic functionality is there for a project developed i
 
 4. Login to your Google account and follow authentication instructions to allow access to your Google Calendar.
 
-If you get a 'This app isn't verified' warning, click on 'Advanced' and then 'Go to Quickstart (unsafe)'
+	If you get a 'This app isn't verified' warning, click on 'Advanced' and then 'Go to Quickstart (unsafe)'
 
 5. Enter the number of the calendar you would like to use -1 (they are indexed starting from 0 - needs to be fixed)
 
