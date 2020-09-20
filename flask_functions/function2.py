@@ -6,8 +6,6 @@ user_dic = {}
 event_dic = {}
 cnt0 = 0
 for course in result['items']:
-    print(course['summary'])
-    sync=int(input("synchronous? (0,1,2) ")) #0=asynch, 1=recorded but maybe pref to watch live, 2=synch
     user_dic[course['summary']]={'sync':course_sync_pref[cnt]}
     event_dic[course['summary']]= copy.deepcopy(course)
     cnt0 += 1
