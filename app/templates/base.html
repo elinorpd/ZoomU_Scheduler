@@ -1,0 +1,14 @@
+<html>
+	<head>
+		{% if title %}
+		<title>{{ title }}</title>
+		{% else %}
+		<title>ZoomU Scheduler</title>
+		{% endif %}
+	</head>
+	<body>
+		<div>ZoomU Scheduler: <a href="/index">Home</a><a href="/login">Login</a>
+		<p>{{ user.username }}</p></div>
+		{% block content %}{% endblock %}
+	</body>
+</html>
