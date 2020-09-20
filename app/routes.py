@@ -40,17 +40,9 @@ def cal():
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.pickle'):
-        with  open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
+    flow = InstalledAppFlow.from_client_secrets_file(
     'masha_credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+    creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
             # with open('token.pickle', 'wb') as token: # can't write files in Google App Engine so comment out or delete
             # pickle.dump(creds, token)
@@ -82,20 +74,8 @@ def schedule():
 
     creds =  None
     SCOPES  = ['https://www.googleapis.com/auth/calendar.readonly']
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.pickle'):
-        with  open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-    'masha_credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+    flow = InstalledAppFlow.from_client_secrets_file('masha_credentials.json', SCOPES)
+    creds = flow.run_local_server(port=0)
     service = googleapiclient.discovery.build('calendar', 'v3', credentials=creds)
     cal_result = service.calendarList().list().execute()
     calendar_id = cal_result['items'][calendar_choice]['id']
@@ -111,8 +91,27 @@ def schedule():
 
 @app.route('/creating', methods=['GET', 'POST'])
 def creating():
-    
-
+    course_sync_pref = [int(request.form['course1']),int(request.form['course2']), int(request.form['course3']), int(request.form['course4']), int(request.form['course5'])]
+    #create a dictionary where each entry is class_name:{dic of its atributes from user input}
+    user_dic = {}
+    #create a dictionary where each entry is class_name:{event params from gcal import minus event id}
+    event_dic = {}
+    cnt0 = 0
+    for course in result['items']:
+        user_dic[course['summary']]={'sync':course_sync_pref[cnt]}
+        event_dic[course['summary']]= copy.deepcopy(course)
+        cnt0 += 1
+        try:
+            del event_dic[course['summary']]['id']#remove the event id bc that's specific to this calendar and i just need the event parameters
+            del event_dic[course['summary']]['htmlLink']
+            del event_dic[course['summary']]['iCalUID']
+            del event_dic[course['summary']]['etag']
+            del event_dic[course['summary']]['organizer']
+            del event_dic[course['summary']]['recurringEventId']
+        except KeyError:
+            pass
+        except:
+            break
     return render_template('creating.html')
 
 
