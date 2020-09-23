@@ -8,6 +8,13 @@ Our tool takes in a Google calendar of the user’s classes, local timezone, the
 
 It's not perfect, but the basic functionality is there for a project developed in less than 36 hours by two new hackers :).
 
+## Getting your own Google API Key and credentials
+
+Follow Step 1 of the [quickstart Google Calendar API](https://developers.google.com/calendar/quickstart/python) in order to create your own Key and credentials.json file. You need a google account to do this. *Make sure you put the credentials.json file in your working directory.*
+
+Go into routes.py and replace all instances of "masha_credentials.json" with your own credentials file name. It will look something like this: `flow = InstalledAppFlow.from_client_secrets_file('YOURCREDENTIALSFILE.json', SCOPES)`
+
+
 ## Running the webapp locally
 
 1. Download all the files
@@ -19,7 +26,7 @@ It's not perfect, but the basic functionality is there for a project developed i
 
 4. Login to your Google account and follow authentication instructions to allow access to your Google Calendar.
 
-	If you get a 'This app isn't verified' warning, click on 'Advanced' and then 'Go to Quickstart (unsafe)'
+	- If you get a 'This app isn't verified' warning, click on 'Advanced' and then 'Go to Quickstart (unsafe)'
 
 5. Enter the number of the calendar you would like to use -1 (they are indexed starting from 0 - needs to be fixed)
 
@@ -41,6 +48,6 @@ Use `CTRL+C` to quit.
 
 3. flask_functions/ contains python files adapted from workbook.ipynb for ease in adding to the webapp, they don't actually run on their own.
 
-4. masha_credentials.json contains API key info for the Google Calendar authentification.
+4. I have excluded our .json file containing API key info for the Google Calendar authentification. You should make sure yours is in your working directory and add the name in the routes.py file instead of "masha_credentials.json"
 
 5. run.py is the python script that will run the webapp.
